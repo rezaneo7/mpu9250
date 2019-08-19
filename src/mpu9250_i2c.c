@@ -15,9 +15,9 @@ mpu9250_i2c_init(void)
   i2c_config_t            conf;
 
   conf.mode               = I2C_MODE_MASTER;
-  conf.sda_io_num         = MPU9250_I2C_MASTER_SDA_IO;
+  conf.sda_io_num         = 18;
   conf.sda_pullup_en      = GPIO_PULLUP_DISABLE;
-  conf.scl_io_num         = MPU9250_I2C_MASTER_SCL_IO;
+  conf.scl_io_num         = 19;
   conf.scl_pullup_en      = GPIO_PULLUP_DISABLE;
   conf.master.clk_speed   = MPU9250_I2C_CLK_FREQ;
 

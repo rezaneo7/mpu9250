@@ -227,7 +227,7 @@ mpu9250_read_gyro_accel(mpu9250_t* mpu9250, imu_sensor_data_t* imu)
 bool
 mpu9250_read_mag(mpu9250_t* mpu9250, imu_sensor_data_t* imu)
 {
-  ak8963_read_all(imu);
+ ak8963_read_all(imu);
   return TRUE;
 }
 
@@ -249,7 +249,7 @@ mpu9250_read_all(mpu9250_t* mpu9250, imu_sensor_data_t* imu)
   imu->gyro[1]  = (int16_t)(data[10] << 8 | data[11]);
   imu->gyro[2]  = (int16_t)(data[12] << 8 | data[13]);
 
-  ak8963_read_all(imu);
+   ak8963_read_all(imu);
 
   return TRUE;
 }

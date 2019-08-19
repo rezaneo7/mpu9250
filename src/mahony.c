@@ -1,8 +1,18 @@
 #include <math.h>
 #include "common_def.h"
 #include "mahony.h"
-#include "math_helper.h"
+//#include "math_helper.h"
 
+float invSqrt1(float x) {
+  float halfx = 0.5f * x;
+  float y = x;
+  long i = *((long*)&y);
+  i = 0x5f3759df - (i>>1);
+  y = *(float*)&i;
+  y = y * (1.5f - (halfx * y * y));
+  y = y * (1.5f - (halfx * y * y));
+  return y;
+}
 ////////////////////////////////////////////////////////////////////////////////
 //
 // private definitions
@@ -69,13 +79,13 @@ mahony_update(mahony_t* mahony,
   if(!((ax == 0.0f) && (ay == 0.0f) && (az == 0.0f))) 
 	{
 		// Normalise accelerometer measurement
-		recipNorm = invSqrt(ax * ax + ay * ay + az * az);
+		recipNorm = invSqrt1(ax * ax + ay * ay + az * az);
 		ax *= recipNorm;
 		ay *= recipNorm;
 		az *= recipNorm;
 
 		// Normalise magnetometer measurement
-		recipNorm = invSqrt(mx * mx + my * my + mz * mz);
+		recipNorm = invSqrt1(mx * mx + my * my + mz * mz);
 		mx *= recipNorm;
 		my *= recipNorm;
 		mz *= recipNorm;
@@ -145,7 +155,7 @@ mahony_update(mahony_t* mahony,
 	mahony->q3 += ( qa * gz + qb * gy - qc * gx);
 
 	// Normalise quaternion
-	recipNorm = invSqrt(mahony->q0 * mahony->q0 + mahony->q1 * mahony->q1 +
+	recipNorm = invSqrt1(mahony->q0 * mahony->q0 + mahony->q1 * mahony->q1 +
 											mahony->q2 * mahony->q2 + mahony->q3 * mahony->q3);
 	mahony->q0 *= recipNorm;
 	mahony->q1 *= recipNorm;
@@ -172,7 +182,7 @@ mahony_updateIMU(mahony_t* mahony, float gx, float gy, float gz,
   if(!((ax == 0.0f) && (ay == 0.0f) && (az == 0.0f))) 
   {
     // Normalise accelerometer measurement
-    recipNorm = invSqrt(ax * ax + ay * ay + az * az);
+    recipNorm = invSqrt1(ax * ax + ay * ay + az * az);
     ax *= recipNorm;
     ay *= recipNorm;
     az *= recipNorm;
@@ -222,7 +232,7 @@ mahony_updateIMU(mahony_t* mahony, float gx, float gy, float gz,
   mahony->q3 += (qa * gz + qb * gy - qc * gx);
 
   // Normalise quaternion
-  recipNorm = invSqrt(mahony->q0 * mahony->q0 +
+  recipNorm = invSqrt1(mahony->q0 * mahony->q0 +
                       mahony->q1 * mahony->q1 +
                       mahony->q2 * mahony->q2 +
                       mahony->q3 * mahony->q3);

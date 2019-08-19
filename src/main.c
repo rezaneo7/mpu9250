@@ -6,7 +6,7 @@
 #include "sdkconfig.h"
 
 #include "imu_task.h"
-#include "shell.h"
+
 
 
 
@@ -24,6 +24,6 @@ void app_main()
 
  
   imu_task_init();
-  shell_init();
+ 
  
 }

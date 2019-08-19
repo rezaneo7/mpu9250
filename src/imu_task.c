@@ -2,7 +2,6 @@
 #include <sys/time.h>
 #include <string.h>
 #include "generic_list.h"
-#include "shell.h"
 #include "io_driver.h"
 #include "esp_log.h"
 #include "nvs_flash.h"
@@ -165,8 +164,10 @@ imu_task(void* pvParameters)
 
   while(1)
   {
+    ESP_LOGI(TAG,"%d",xDelay );
     if(xQueueReceive(_cmd_queue, &cmd, xDelay))
     {
+      ESP_LOGI(TAG,"%d",cmd);
       switch(cmd)
       {
       case imu_task_perform_mag_calibration:
@@ -200,7 +201,7 @@ imu_task(void* pvParameters)
 
     xSemaphoreTake(_mutex, portMAX_DELAY);
 
-    //mpu9250_read_all(&_mpu9250, &_imu.raw);
+    mpu9250_read_all(&_mpu9250, &_imu.raw);
     mpu9250_read_gyro_accel(&_mpu9250, &_imu.raw);
     if(cnt == 0)
     {
@@ -212,6 +213,17 @@ imu_task(void* pvParameters)
       cnt = 0;
     }
 
+     ESP_LOGI(TAG,"accel[x] = %f",_imu.data.accel[0]);
+     ESP_LOGI(TAG,"accel[y] %f",_imu.data.accel[1]);
+     ESP_LOGI(TAG,"accel[z] %f",_imu.data.accel[2]);
+     ESP_LOGI(TAG,"gyro[x] = %f",_imu.data.gyro[0]);
+     ESP_LOGI(TAG,"gyro[y] %f",_imu.data.gyro[1]);
+     ESP_LOGI(TAG,"gyro[z] %f",_imu.data.gyro[2]);
+     ESP_LOGI(TAG,"mag[x] = %f",_imu.data.mag[0]);
+     ESP_LOGI(TAG,"mag[y] %f",_imu.data.mag[1]);
+     ESP_LOGI(TAG,"mag[z] %f",_imu.data.mag[2]);
+     ESP_LOGI(TAG,"mode : %d",_imu.mode);
+    
     imu_update(&_imu);
 
     if(_imu.mode != imu_mode_normal)

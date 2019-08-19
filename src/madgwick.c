@@ -8,6 +8,7 @@
 #define Q2    madgwick->q2
 #define Q3    madgwick->q3
 
+
 void
 madgwick_init(madgwick_t* madgwick, float sample_freq)
 {
